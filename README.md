@@ -2,7 +2,7 @@
 This page contains a guide and python script for Any% speedrunning the game Rivage
 
 ## Game settings
-I have the in-game FPS counter enabled to notate when time should start
+I have the in-game FPS counter enabled to notate when time should start 
 I also run them game in windowed mode so I can have the script output visible off to the side
 
 ## Menu Loop
@@ -16,6 +16,8 @@ When you start a new game during the opening cutscene run the script, it will di
 - LVL 5 ID Number
 - LVL 5 Badge Code
 
+<!-- ![alt text](https://github.com/blurmcclure18/Rivage_Speedrun_Any/blob/main/images/Script_Output_Example.png?raw=true) -->
+![alt text](./images/Script_Output_Example.png)
 - Skip the cutscene and time starts with the FPS counter displays in the upper left corner
 
 ### LVL 1 Split:
