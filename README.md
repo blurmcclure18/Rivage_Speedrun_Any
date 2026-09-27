@@ -16,7 +16,7 @@ When you start a new game during the opening cutscene run the script, it will di
 - LVL 5 ID Number
 - LVL 5 Badge Code
 	- Script Output Example
-		![alt text](./images/Script_Output_Example.png)
+   - ![alt text](./images/Script_Output_Example.png)
 
 - Skip the cutscene and time starts with the FPS counter displays in the upper left corner
 ### LVL 1 Split:
@@ -27,7 +27,7 @@ When you start a new game during the opening cutscene run the script, it will di
 - Leave your room and enter the main area
 - Grab the first key on the lounge area
 - Go up to the kitchen and enter the below code to unlock the terminal
-	 ![alt text](./images/Kitchen_Terminal_Code.png)
+	- ![alt text](./images/Kitchen_Terminal_Code.png)
 - Select the robot area
 - Move down to the robot area and insert the first key into the pharmacy terminal
 - Pick up the key on the desk in the robot area
@@ -44,7 +44,7 @@ When you start a new game during the opening cutscene run the script, it will di
 - Go to the kitchen terminal, unlock it and select the cultivation room
 - Go to the terminal and type in the LVL 5 ID number from the script output
 - Using the below guide enter the LVL 5 Code displayed on the output
-	![alt text](./images/Barcode_Guide.png)
+	- ![alt text](./images/Barcode_Guide.png)
 - Open the card containter
 - Now go to miranda's locker and grab the key
 - Modify the key so the middle part is straight up and the bottom part (closest to the handle) is opposite the first two
