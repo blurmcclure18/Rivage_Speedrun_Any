@@ -101,6 +101,32 @@
         </div>
     </header>
 
+    <!-- Speedrun Timer HUD Panel -->
+    <section class="relative z-20 max-w-xl mx-auto w-full px-4 pt-3 flex justify-between items-center gap-2">
+        <!-- Live Timer Box -->
+        <div class="flex-1 bg-slate-950/80 border border-cyan-500/40 rounded-xl p-2.5 flex flex-col items-center justify-center shadow-[0_0_15px_rgba(0,243,255,0.1)]">
+            <span class="text-[10px] font-mono text-cyan-400 tracking-widest uppercase flex items-center gap-1">
+                <i class="fa-solid fa-stopwatch text-cyan-400"></i> TIMER
+            </span>
+            <div id="live-timer" class="font-orbitron text-xl sm:text-2xl font-extrabold text-cyan-300 tracking-wider">
+                00:00.<span class="text-base text-cyan-400/80">000</span>
+            </div>
+        </div>
+
+        <!-- Personal Best Box -->
+        <div class="flex-1 bg-slate-950/80 border border-amber-500/40 rounded-xl p-2.5 flex flex-col items-center justify-center shadow-[0_0_15px_rgba(255,204,0,0.1)] relative group">
+            <span class="text-[10px] font-mono text-amber-400 tracking-widest uppercase flex items-center gap-1">
+                <i class="fa-solid fa-trophy text-amber-400"></i> BEST (PB)
+            </span>
+            <div id="pb-timer" class="font-orbitron text-xl sm:text-2xl font-extrabold text-amber-300 tracking-wider">
+                --:--.<span class="text-base text-amber-400/80">---</span>
+            </div>
+            <button id="reset-pb-btn" title="Reset Personal Best" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-900 border border-amber-500/60 text-amber-400 text-xs hover:bg-amber-500 hover:text-black transition-all flex items-center justify-center opacity-70 group-hover:opacity-100">
+                <i class="fa-solid fa-rotate text-[10px]"></i>
+            </button>
+        </div>
+    </section>
+
     <!-- Main Interactive Area -->
     <main class="relative z-10 flex-1 flex flex-col items-center justify-center p-2 sm:p-4 my-2">
         
@@ -274,6 +300,42 @@
         </div>
     </div>
 
+    <!-- Victory / Run Summary Modal -->
+    <div id="victory-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden p-4">
+        <div id="victory-card" class="bg-slate-900 border-2 border-emerald-400/80 rounded-2xl p-6 w-full max-w-md text-center shadow-[0_0_50px_rgba(0,255,102,0.3)] transform transition-all duration-300 scale-95">
+            
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400 mb-3 animate-bounce">
+                <i class="fa-solid fa-trophy text-3xl text-amber-300"></i>
+            </div>
+
+            <h2 id="victory-title" class="font-orbitron text-2xl font-black text-emerald-400 tracking-widest mb-1">
+                RUN COMPLETED!
+            </h2>
+            <p id="pb-badge" class="text-xs font-mono font-bold text-amber-300 uppercase tracking-widest mb-4 hidden">
+                <i class="fa-solid fa-star"></i> NEW PERSONAL BEST! <i class="fa-solid fa-star"></i>
+            </p>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 my-4 space-y-3 font-mono text-sm">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">TIME:</span>
+                    <span id="summary-time" class="font-orbitron font-bold text-cyan-300 text-lg">00:00.000</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">PERSONAL BEST:</span>
+                    <span id="summary-pb" class="font-orbitron font-bold text-amber-300 text-lg">00:00.000</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">ERRORS ENCOUNTERED:</span>
+                    <span id="summary-errors" class="font-orbitron font-bold text-rose-400">0</span>
+                </div>
+            </div>
+
+            <button id="victory-close-btn" class="w-full py-3 bg-emerald-500/20 border border-emerald-400 hover:bg-emerald-500/40 text-emerald-300 font-extrabold rounded-xl text-sm tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(0,255,102,0.2)]">
+                AGAIN / RESTART
+            </button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Target exact sequence specified by user (45 numbers)
@@ -285,6 +347,14 @@
 
             let currentSequence = [];
             let soundEnabled = true;
+
+            // Speedrun Timer State
+            let timerRunning = false;
+            let startTime = 0;
+            let elapsedTime = 0;
+            let timerInterval = null;
+            let errorCount = 0;
+            let personalBest = localStorage.getItem('hex_keypad_pb') ? parseFloat(localStorage.getItem('hex_keypad_pb')) : null;
 
             // Audio Context setup
             const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -337,6 +407,16 @@
                 } catch (e) {}
             }
 
+            // Time Formatter: milliseconds -> MM:SS.mmm
+            function formatTime(ms) {
+                if (ms === null || isNaN(ms)) return '--:--.---';
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+                const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+                const milliseconds = Math.floor(ms % 1000).toString().padStart(3, '0');
+                return `${minutes}:${seconds}.${milliseconds}`;
+            }
+
             // DOM Elements
             const hexBtns = document.querySelectorAll('.hex-btn');
             const lastNumberDisplay = document.getElementById('last-number-display');
@@ -348,9 +428,22 @@
             const centerStatusTitle = document.getElementById('center-status-title');
             const hexContainer = document.getElementById('hex-container');
 
+            const liveTimerDisplay = document.getElementById('live-timer');
+            const pbTimerDisplay = document.getElementById('pb-timer');
+            const resetPbBtn = document.getElementById('reset-pb-btn');
+
             const btnCancel = document.getElementById('btn-cancel');
             const btnReset = document.getElementById('btn-reset');
             const btnSend = document.getElementById('btn-send');
+
+            const victoryModal = document.getElementById('victory-modal');
+            const victoryCard = document.getElementById('victory-card');
+            const victoryTitle = document.getElementById('victory-title');
+            const pbBadge = document.getElementById('pb-badge');
+            const summaryTime = document.getElementById('summary-time');
+            const summaryPb = document.getElementById('summary-pb');
+            const summaryErrors = document.getElementById('summary-errors');
+            const victoryCloseBtn = document.getElementById('victory-close-btn');
 
             const configBtn = document.getElementById('config-btn');
             const configModal = document.getElementById('config-modal');
@@ -358,6 +451,45 @@
             const modalOkBtn = document.getElementById('modal-ok-btn');
             const audioToggleBtn = document.getElementById('audio-toggle-btn');
             const audioIcon = document.getElementById('audio-icon');
+
+            // Initialize PB HUD Display
+            function renderPB() {
+                if (personalBest !== null) {
+                    const formatted = formatTime(personalBest);
+                    const parts = formatted.split('.');
+                    pbTimerDisplay.innerHTML = `${parts[0]}.<span class="text-base text-amber-400/80">${parts[1]}</span>`;
+                } else {
+                    pbTimerDisplay.innerHTML = `--:--.<span class="text-base text-amber-400/80">---</span>`;
+                }
+            }
+
+            // Timer Controllers
+            function startTimer() {
+                if (timerRunning) return;
+                timerRunning = true;
+                startTime = performance.now() - elapsedTime;
+                timerInterval = requestAnimationFrame(updateTimerLoop);
+            }
+
+            function updateTimerLoop() {
+                if (!timerRunning) return;
+                elapsedTime = performance.now() - startTime;
+                const formatted = formatTime(elapsedTime);
+                const parts = formatted.split('.');
+                liveTimerDisplay.innerHTML = `${parts[0]}.<span class="text-base text-cyan-400/80">${parts[1]}</span>`;
+                timerInterval = requestAnimationFrame(updateTimerLoop);
+            }
+
+            function stopTimer() {
+                timerRunning = false;
+                cancelAnimationFrame(timerInterval);
+            }
+
+            function resetTimer() {
+                stopTimer();
+                elapsedTime = 0;
+                liveTimerDisplay.innerHTML = `00:00.<span class="text-base text-cyan-400/80">000</span>`;
+            }
 
             // Update UI sequence state
             function updateDisplay(popEffect = false) {
@@ -394,6 +526,7 @@
             }
 
             function triggerErrorState() {
+                errorCount++;
                 playErrorSound();
                 hexContainer.classList.add('error-shake');
                 
@@ -403,7 +536,7 @@
                 statusTag.textContent = 'SEQUENCE FAILED';
                 statusTag.className = 'text-rose-500 font-bold';
                 statusPing.className = 'w-3 h-3 rounded-full bg-red-500 animate-ping';
-                centerStatusTitle.textContent = 'ERROR - RESET';
+                centerStatusTitle.textContent = 'ERROR - RESTART';
 
                 // Flash last number in red
                 if (currentSequence.length > 0) {
@@ -416,7 +549,8 @@
                     currentSequence = [];
                     resetCenterState();
                     updateDisplay();
-                }, 900);
+                    resetTimer(); // Restart attempt standard speedrun reset
+                }, 800);
             }
 
             function resetCenterState() {
@@ -429,11 +563,16 @@
                 centerStatusTitle.textContent = 'LAST INPUT';
             }
 
-            // Register Hex Button Presses with strict step verification
+            // Register Hex Button Presses
             hexBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const val = parseInt(btn.getAttribute('data-hex'));
                     const nextIndex = currentSequence.length;
+
+                    // Start live speedrun timer on first button press of attempt
+                    if (nextIndex === 0 && !timerRunning) {
+                        startTimer();
+                    }
 
                     // Check if pressed key matches required sequence step
                     if (val !== TARGET_SEQUENCE[nextIndex]) {
@@ -474,10 +613,21 @@
                 currentSequence = [];
                 resetCenterState();
                 updateDisplay();
+                resetTimer();
             });
 
             function triggerSuccessState() {
+                stopTimer();
                 playSuccessSound();
+
+                let isNewPB = false;
+                if (personalBest === null || elapsedTime < personalBest) {
+                    personalBest = elapsedTime;
+                    localStorage.setItem('hex_keypad_pb', personalBest);
+                    renderPB();
+                    isNewPB = true;
+                }
+
                 centerPolygon.setAttribute('stroke', '#00ff66');
                 centerPolygon.setAttribute('fill', 'rgba(0, 255, 102, 0.2)');
                 centerStatusLed.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 mt-2 shadow-[0_0_14px_#00ff66] animate-ping';
@@ -485,6 +635,25 @@
                 statusTag.className = 'text-emerald-400 font-bold';
                 statusPing.className = 'w-3 h-3 rounded-full bg-emerald-400 animate-ping';
                 centerStatusTitle.textContent = 'AUTHORIZED';
+
+                // Display victory modal summary
+                summaryTime.textContent = formatTime(elapsedTime);
+                summaryPb.textContent = formatTime(personalBest);
+                summaryErrors.textContent = errorCount;
+
+                if (isNewPB) {
+                    pbBadge.classList.remove('hidden');
+                    victoryTitle.textContent = 'NEW RECORD!';
+                    victoryCard.className = 'bg-slate-900 border-2 border-amber-400 rounded-2xl p-6 w-full max-w-md text-center shadow-[0_0_60px_rgba(255,204,0,0.4)] transform transition-all duration-300 scale-100';
+                } else {
+                    pbBadge.classList.add('hidden');
+                    victoryTitle.textContent = 'RUN COMPLETED!';
+                    victoryCard.className = 'bg-slate-900 border-2 border-emerald-400/80 rounded-2xl p-6 w-full max-w-md text-center shadow-[0_0_50px_rgba(0,255,102,0.3)] transform transition-all duration-300 scale-100';
+                }
+
+                setTimeout(() => {
+                    victoryModal.classList.remove('hidden');
+                }, 300);
             }
 
             // Manual Submit / Send Button
@@ -497,14 +666,33 @@
                 if (currentSequence.length === TARGET_SEQUENCE.length) {
                     triggerSuccessState();
                 } else {
-                    // Incomplete sequence manual send alert
                     playBeep(300, 0.15, 'triangle');
                     statusTag.textContent = `INCOMPLETE (${currentSequence.length}/45)`;
                     statusTag.className = 'text-amber-400 font-semibold';
                 }
             });
 
-            // Modal logic
+            // Reset PB listener
+            resetPbBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm("Are you sure you want to reset your Personal Best speedrun time?")) {
+                    localStorage.removeItem('hex_keypad_pb');
+                    personalBest = null;
+                    renderPB();
+                }
+            });
+
+            // Victory Modal close & restart
+            victoryCloseBtn.addEventListener('click', () => {
+                victoryModal.classList.add('hidden');
+                currentSequence = [];
+                errorCount = 0;
+                resetCenterState();
+                updateDisplay();
+                resetTimer();
+            });
+
+            // Config Modal logic
             configBtn.addEventListener('click', () => configModal.classList.remove('hidden'));
             closeModalBtn.addEventListener('click', () => configModal.classList.add('hidden'));
             modalOkBtn.addEventListener('click', () => configModal.classList.add('hidden'));
@@ -515,7 +703,8 @@
                 audioIcon.className = soundEnabled ? 'fa-solid fa-volume-high text-cyan-400' : 'fa-solid fa-volume-xmark text-slate-500';
             });
 
-            // Init Display
+            // Init Display & PB
+            renderPB();
             updateDisplay();
         });
     </script>
