@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -345,4 +344,180 @@
             const statusTag = document.getElementById('status-tag');
             const statusPing = document.getElementById('status-ping');
             const centerPolygon = document.getElementById('center-polygon');
-      
+            const centerStatusLed = document.getElementById('center-status-led');
+            const centerStatusTitle = document.getElementById('center-status-title');
+            const hexContainer = document.getElementById('hex-container');
+
+            const btnCancel = document.getElementById('btn-cancel');
+            const btnReset = document.getElementById('btn-reset');
+            const btnSend = document.getElementById('btn-send');
+
+            const configBtn = document.getElementById('config-btn');
+            const configModal = document.getElementById('config-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalOkBtn = document.getElementById('modal-ok-btn');
+            const audioToggleBtn = document.getElementById('audio-toggle-btn');
+            const audioIcon = document.getElementById('audio-icon');
+
+            // Update UI sequence state
+            function updateDisplay(popEffect = false) {
+                const len = currentSequence.length;
+                
+                if (len === 0) {
+                    lastNumberDisplay.innerHTML = `<span class="text-slate-600 text-2xl font-normal">-</span>`;
+                } else {
+                    const lastVal = currentSequence[len - 1];
+                    lastNumberDisplay.innerHTML = `<span class="text-cyan-300 drop-shadow-[0_0_12px_#00f3ff]">${lastVal}</span>`;
+                }
+
+                if (popEffect && len > 0) {
+                    lastNumberDisplay.classList.add('scale-125');
+                    setTimeout(() => lastNumberDisplay.classList.remove('scale-125'), 120);
+                }
+
+                sequenceCount.textContent = `PROGRESS: ${len} / ${TARGET_SEQUENCE.length}`;
+            }
+
+            function animateHexButton(btn, color = '#00f3ff') {
+                const poly = btn.querySelector('.hex-poly');
+                if (!poly) return;
+                
+                poly.setAttribute('fill', 'rgba(0, 243, 255, 0.35)');
+                poly.setAttribute('stroke', color);
+                poly.setAttribute('stroke-width', '3');
+
+                setTimeout(() => {
+                    poly.setAttribute('fill', 'rgba(12, 22, 38, 0.85)');
+                    poly.setAttribute('stroke', '#00f3ff');
+                    poly.setAttribute('stroke-width', '2');
+                }, 180);
+            }
+
+            function triggerErrorState() {
+                playErrorSound();
+                hexContainer.classList.add('error-shake');
+                
+                centerPolygon.setAttribute('stroke', '#ff0055');
+                centerPolygon.setAttribute('fill', 'rgba(255, 0, 85, 0.25)');
+                centerStatusLed.className = 'w-2.5 h-2.5 rounded-full bg-red-500 mt-2 shadow-[0_0_12px_#ff0055]';
+                statusTag.textContent = 'SEQUENCE FAILED';
+                statusTag.className = 'text-rose-500 font-bold';
+                statusPing.className = 'w-3 h-3 rounded-full bg-red-500 animate-ping';
+                centerStatusTitle.textContent = 'ERROR - RESET';
+
+                // Flash last number in red
+                if (currentSequence.length > 0) {
+                    const wrongNum = currentSequence[currentSequence.length - 1];
+                    lastNumberDisplay.innerHTML = `<span class="text-red-500 drop-shadow-[0_0_12px_#ff0055]">${wrongNum}</span>`;
+                }
+
+                setTimeout(() => {
+                    hexContainer.classList.remove('error-shake');
+                    currentSequence = [];
+                    resetCenterState();
+                    updateDisplay();
+                }, 900);
+            }
+
+            function resetCenterState() {
+                centerPolygon.setAttribute('stroke', '#00f3ff');
+                centerPolygon.setAttribute('fill', 'rgba(8, 15, 26, 0.9)');
+                centerStatusLed.className = 'w-2.5 h-2.5 rounded-full bg-cyan-400 mt-2 shadow-[0_0_8px_#00f3ff]';
+                statusTag.textContent = 'READY';
+                statusTag.className = 'text-emerald-400 font-semibold';
+                statusPing.className = 'w-3 h-3 rounded-full bg-cyan-400 animate-ping';
+                centerStatusTitle.textContent = 'LAST INPUT';
+            }
+
+            // Register Hex Button Presses with strict step verification
+            hexBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const val = parseInt(btn.getAttribute('data-hex'));
+                    const nextIndex = currentSequence.length;
+
+                    // Check if pressed key matches required sequence step
+                    if (val !== TARGET_SEQUENCE[nextIndex]) {
+                        currentSequence.push(val);
+                        animateHexButton(btn, '#ff0055');
+                        triggerErrorState();
+                        return;
+                    }
+
+                    // Sound & Visual pulse
+                    playBeep(420 + (val * 70), 0.08, 'sine');
+                    animateHexButton(btn);
+
+                    currentSequence.push(val);
+                    resetCenterState();
+                    updateDisplay(true);
+
+                    // Auto-complete check if full 45 numbers are reached
+                    if (currentSequence.length === TARGET_SEQUENCE.length) {
+                        triggerSuccessState();
+                    }
+                });
+            });
+
+            // Cancel Last Step
+            btnCancel.addEventListener('click', () => {
+                if (currentSequence.length > 0) {
+                    playBeep(320, 0.08, 'square');
+                    currentSequence.pop();
+                    resetCenterState();
+                    updateDisplay();
+                }
+            });
+
+            // Reset Entire Route
+            btnReset.addEventListener('click', () => {
+                playBeep(240, 0.1, 'sawtooth');
+                currentSequence = [];
+                resetCenterState();
+                updateDisplay();
+            });
+
+            function triggerSuccessState() {
+                playSuccessSound();
+                centerPolygon.setAttribute('stroke', '#00ff66');
+                centerPolygon.setAttribute('fill', 'rgba(0, 255, 102, 0.2)');
+                centerStatusLed.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 mt-2 shadow-[0_0_14px_#00ff66] animate-ping';
+                statusTag.textContent = 'ACCESS GRANTED';
+                statusTag.className = 'text-emerald-400 font-bold';
+                statusPing.className = 'w-3 h-3 rounded-full bg-emerald-400 animate-ping';
+                centerStatusTitle.textContent = 'AUTHORIZED';
+            }
+
+            // Manual Submit / Send Button
+            btnSend.addEventListener('click', () => {
+                if (currentSequence.length === 0) {
+                    playErrorSound();
+                    return;
+                }
+
+                if (currentSequence.length === TARGET_SEQUENCE.length) {
+                    triggerSuccessState();
+                } else {
+                    // Incomplete sequence manual send alert
+                    playBeep(300, 0.15, 'triangle');
+                    statusTag.textContent = `INCOMPLETE (${currentSequence.length}/45)`;
+                    statusTag.className = 'text-amber-400 font-semibold';
+                }
+            });
+
+            // Modal logic
+            configBtn.addEventListener('click', () => configModal.classList.remove('hidden'));
+            closeModalBtn.addEventListener('click', () => configModal.classList.add('hidden'));
+            modalOkBtn.addEventListener('click', () => configModal.classList.add('hidden'));
+
+            // Audio Toggle
+            audioToggleBtn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                audioIcon.className = soundEnabled ? 'fa-solid fa-volume-high text-cyan-400' : 'fa-solid fa-volume-xmark text-slate-500';
+            });
+
+            // Init Display
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
