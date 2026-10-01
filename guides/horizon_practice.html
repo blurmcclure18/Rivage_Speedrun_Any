@@ -116,148 +116,138 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center p-4 md:p-8 relative">
+<body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-8 relative">
 
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
     <!-- Top Title Header -->
-    <header class="z-10 text-center mb-4">
-        <h1 class="font-orbitron font-extrabold text-2xl md:text-3xl text-orange-500 tracking-wider flex items-center justify-center gap-3">
+    <header class="z-10 text-center mb-3">
+        <h1 class="font-orbitron font-extrabold text-xl md:text-3xl text-orange-500 tracking-wider flex items-center justify-center gap-3">
             <i class="fa-solid fa-satellite-dish text-orange-400"></i> HORIZON PROBE SOUND DECODER
         </h1>
-        <p class="text-xs text-slate-400 font-mono tracking-widest mt-1 uppercase">Emulating NAKO Sound Pad Controller • Exnilon Particle Matrix</p>
+        <p class="text-[11px] md:text-xs text-slate-400 font-mono tracking-widest mt-0.5 uppercase">Emulating NAKO Sound Pad Controller • Exnilon Particle Matrix</p>
     </header>
 
     <!-- MAIN NAKO CONTROLLER HARDWARE UNIT -->
-    <main class="z-10 w-full max-w-4xl nako-chassis p-5 md:p-8 relative shadow-2xl">
+    <main class="z-10 w-full max-w-3xl nako-chassis p-4 md:p-7 relative shadow-2xl">
         
-        <div class="grid grid-cols-12 gap-4 md:gap-6">
-            
-            <!-- LEFT SECTION: Branding, Speaker, LED Status -->
-            <div class="col-span-12 md:col-span-3 flex flex-col justify-between pr-0 md:pr-4 border-b md:border-b-0 md:border-r border-slate-700/60 pb-4 md:pb-0">
-                
-                <!-- NAKO Controller Logo -->
-                <div>
-                    <div class="font-orbitron font-black text-3xl tracking-tighter text-slate-200">NAKO</div>
-                    <div class="font-orbitron font-bold text-[10px] tracking-widest text-slate-900 bg-orange-500 px-2 py-0.5 rounded-sm inline-block mt-0.5">
-                        CONTROLLER
-                    </div>
+        <!-- Header Branding Bar & Indicators -->
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-700/60">
+            <div class="flex items-center gap-3">
+                <span class="font-orbitron font-black text-2xl md:text-3xl tracking-tighter text-slate-200">NAKO</span>
+                <span class="font-orbitron font-bold text-[10px] tracking-widest text-slate-900 bg-orange-500 px-2 py-0.5 rounded-sm">
+                    CONTROLLER
+                </span>
+            </div>
 
-                    <!-- Yellow Top LEDs -->
-                    <div class="flex gap-2 mt-5">
-                        <div id="led-1" class="led-indicator w-7 h-3 rounded-sm"></div>
-                        <div id="led-2" class="led-indicator w-7 h-3 rounded-sm"></div>
-                    </div>
-                </div>
-
-                <!-- Speaker Mesh Section with Accent Diagonal Line -->
-                <div class="speaker-grille h-44 md:h-52 my-4 relative overflow-hidden flex items-center justify-center border border-slate-700/80">
-                    <div class="absolute inset-0 border-r-2 border-orange-500/80 rotate-45 transform scale-150 pointer-events-none"></div>
-                    <div class="font-orbitron text-[9px] text-slate-600 font-bold tracking-widest uppercase rotate-90 opacity-40">SPEAKER MATRIX</div>
-                </div>
-
-                <div class="text-[10px] font-mono text-slate-500 flex justify-between items-center">
+            <!-- Glowing Top LEDs & System Status -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex font-mono text-[10px] text-slate-400 gap-3">
                     <span>SERIES-8</span>
                     <span class="text-orange-400">SYS READY</span>
                 </div>
-            </div>
-
-            <!-- RIGHT SECTION: Display Screen and 2x3 Sound Pad Grid -->
-            <div class="col-span-12 md:col-span-9 flex flex-col gap-5">
-                
-                <!-- Recessed Top Display Screen -->
-                <div class="nako-screen p-4 flex flex-col justify-between items-center min-h-[110px] relative text-slate-900 font-orbitron">
-                    
-                    <!-- Screen Status Header Text -->
-                    <div id="screen-text" class="text-xs md:text-sm font-bold tracking-wider text-center text-slate-800 uppercase mt-1">
-                        INITIALIZED. TRANSMIT PROBE SIGNAL.
-                    </div>
-
-                    <!-- 4 Spatial Node Dots visualizer (1 - 2 - 3 - 4) -->
-                    <div class="flex items-center justify-center gap-6 my-2">
-                        <div class="flex flex-col items-center gap-1">
-                            <div id="screen-dot-1" class="screen-node"></div>
-                            <span class="text-[9px] font-bold text-slate-700">1</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-1">
-                            <div id="screen-dot-2" class="screen-node"></div>
-                            <span class="text-[9px] font-bold text-slate-700">2</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-1">
-                            <div id="screen-dot-3" class="screen-node"></div>
-                            <span class="text-[9px] font-bold text-slate-700">3</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-1">
-                            <div id="screen-dot-4" class="screen-node"></div>
-                            <span class="text-[9px] font-bold text-slate-700">4</span>
-                        </div>
-                    </div>
-
-                    <!-- Code Buffer Indicator on Screen -->
-                    <div class="w-full flex justify-between items-center text-[10px] font-mono text-slate-700 px-2 pt-1 border-t border-slate-400/60">
-                        <span>RESONANCE: 24-BIT</span>
-                        <span id="screen-buffer">PADS INPUT: 0/6</span>
-                    </div>
-                </div>
-
-                <!-- 2x3 Sound Pad Grid -->
-                <div class="grid grid-cols-3 gap-3 md:gap-4">
-                    
-                    <!-- PAD 1 -->
-                    <button id="pad-btn-1" onclick="handlePadClick(1)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 1</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
-
-                    <!-- PAD 2 -->
-                    <button id="pad-btn-2" onclick="handlePadClick(2)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 2</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
-
-                    <!-- PAD 3 -->
-                    <button id="pad-btn-3" onclick="handlePadClick(3)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 3</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
-
-                    <!-- PAD 4 -->
-                    <button id="pad-btn-4" onclick="handlePadClick(4)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 4</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
-
-                    <!-- PAD 5 -->
-                    <button id="pad-btn-5" onclick="handlePadClick(5)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 5</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
-
-                    <!-- PAD 6 -->
-                    <button id="pad-btn-6" onclick="handlePadClick(6)" class="nako-pad p-3 md:p-4 h-24 md:h-28 flex flex-col justify-between items-start text-left cursor-pointer">
-                        <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 6</span>
-                        <div class="w-full flex justify-center my-auto">
-                            <i class="fa-solid fa-volume-high text-2xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
-                        </div>
-                    </button>
+                <div class="flex gap-2">
+                    <div id="led-1" class="led-indicator w-6 md:w-7 h-2.5 md:h-3 rounded-sm"></div>
+                    <div id="led-2" class="led-indicator w-6 md:w-7 h-2.5 md:h-3 rounded-sm"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Main Workspace: Recessed Display Screen and 2x3 Sound Pad Grid -->
+        <div class="flex flex-col gap-4">
+            
+            <!-- Recessed Top Display Screen -->
+            <div class="nako-screen p-3 md:p-4 flex flex-col justify-between items-center min-h-[100px] relative text-slate-900 font-orbitron">
+                
+                <!-- Screen Status Header Text -->
+                <div id="screen-text" class="text-xs md:text-sm font-bold tracking-wider text-center text-slate-800 uppercase mt-0.5">
+                    INITIALIZED. TRANSMIT PROBE SIGNAL.
+                </div>
+
+                <!-- 4 Spatial Node Dots visualizer (1 - 2 - 3 - 4) -->
+                <div class="flex items-center justify-center gap-6 my-2">
+                    <div class="flex flex-col items-center gap-1">
+                        <div id="screen-dot-1" class="screen-node"></div>
+                        <span class="text-[9px] font-bold text-slate-700">1</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div id="screen-dot-2" class="screen-node"></div>
+                        <span class="text-[9px] font-bold text-slate-700">2</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div id="screen-dot-3" class="screen-node"></div>
+                        <span class="text-[9px] font-bold text-slate-700">3</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div id="screen-dot-4" class="screen-node"></div>
+                        <span class="text-[9px] font-bold text-slate-700">4</span>
+                    </div>
+                </div>
+
+                <!-- Code Buffer Indicator on Screen -->
+                <div class="w-full flex justify-between items-center text-[10px] font-mono text-slate-700 px-1 pt-1 border-t border-slate-400/60">
+                    <span>RESONANCE: 24-BIT</span>
+                    <span id="screen-buffer">PADS INPUT: 0/6</span>
+                </div>
+            </div>
+
+            <!-- 2x3 Sound Pad Grid -->
+            <div class="grid grid-cols-3 gap-2.5 md:gap-4">
+                
+                <!-- PAD 1 -->
+                <button id="pad-btn-1" onclick="handlePadClick(1)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 1</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+
+                <!-- PAD 2 -->
+                <button id="pad-btn-2" onclick="handlePadClick(2)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 2</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+
+                <!-- PAD 3 -->
+                <button id="pad-btn-3" onclick="handlePadClick(3)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 3</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+
+                <!-- PAD 4 -->
+                <button id="pad-btn-4" onclick="handlePadClick(4)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 4</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+
+                <!-- PAD 5 -->
+                <button id="pad-btn-5" onclick="handlePadClick(5)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 5</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+
+                <!-- PAD 6 -->
+                <button id="pad-btn-6" onclick="handlePadClick(6)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 6</span>
+                    <div class="w-full flex justify-center my-auto">
+                        <i class="fa-solid fa-volume-high text-xl md:text-3xl text-slate-300 pad-icon transition-all"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+
         <!-- Bottom Outer Yellow LED Tabs -->
-        <div class="flex justify-end gap-12 px-8 -mb-7 mt-3">
-            <div id="bottom-led-1" class="led-indicator w-12 h-3.5 rounded-b-md"></div>
-            <div id="bottom-led-2" class="led-indicator w-12 h-3.5 rounded-b-md"></div>
+        <div class="flex justify-end gap-10 px-6 -mb-6 mt-3">
+            <div id="bottom-led-1" class="led-indicator w-10 md:w-12 h-3 rounded-b-md"></div>
+            <div id="bottom-led-2" class="led-indicator w-10 md:w-12 h-3 rounded-b-md"></div>
         </div>
     </main>
 
