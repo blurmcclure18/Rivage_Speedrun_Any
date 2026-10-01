@@ -1,10 +1,13 @@
 ##### Lvl2 code 
-- 4923861275
+- 492 386 127 5
 ##### HV commands 
-- ``` build hyperviolet.qb ```
-- ``` copy flashlight.exe miranda.v```
+- ```build hyperviolet.qb ```
+- ```copy flashlight.exe miranda.v```
+- ```datalens.exe train_components_list.dtl```
 ##### Multipass codes 
-- 379 087 | 208 674 | 687 575
+- 379 087  
+- 208 674 
+- 687 575
 ##### Stellar Map 
 - 3 - 3 - 1 - 1 - 2 - 3 - 4 - 3
 - 1 - 1 - 2 - 6 - 6 - 6 - 1 
@@ -26,14 +29,15 @@
 - 3A - 61 - 6C - 65 - 61
 - 74 - 74 - 69 - 6F - 6E
 - 73 - ???????
+
+###### Hex Ref
+E = 65
+L = 6C
+Q = 71
+U = 75
+Z = 7A
 ##### Cube Solve Locations:
 1. Kitchen
 2. Lobby
 3. Connector
 4. Garage
-##### Printer List Commands:
-- ```asroot extract datalensarchive.qpak``` 
-- ```build datalensinstaller.qb ```
-- ```datalens.exe train_components_list.dtl```
-
-->, 

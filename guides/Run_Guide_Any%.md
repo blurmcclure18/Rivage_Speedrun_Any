@@ -2,20 +2,23 @@
 - Loop 0 - 1:52
     - Lvl 1 Keycard
     - Pod Access
+
 - Loop 1 - 2:54
     - Lvl 2 Keycard
 		- Code: 4923861275
-		- ![[Pasted image 20260927091233.png]]
+
 - Loop 2 - 3:00
 	- Contactless
 	- HV Flashlight
-		  ```build hyperviolet.qb
-		  copy flashlight.exe miranda.v```
+		``` build hyperviolet.qb ```
+		``` datalens.exe train_components_list.dtl ``` 
+		``` copy flashlight.exe miranda.v ```
 - Loop 3 - 1:21
     - Multi-Pass
-		- CP379087
-	    - CP208674
-		- CP687575
+		- 379087
+		- 208674
+		- 687575
+
 	- Stellar Map
 		- 3 - 3 - 1 - 1 - 2 - 3 - 4 - 3
 		- 1 - 1 - 2 - 6 - 6 - 6 - 1 
@@ -24,6 +27,7 @@
 		- 4 - 3 - 4 - 4
 		- 5 - 4 - 4 - 4 - 4
 		- 2 - 2 - 1 - 2 - 3 - 2
+
 	- Particle Code
 		- Sound Pad Guide:
 			1. 1 4 
@@ -34,17 +38,23 @@
 			6. 3 4 
 - Loop 4 - 7:32 
 	- Quantum Battery
+
 - Loop 5 - 7:45
 	- Jonny Fingerprints
+
 - Loop 6 - 3:16
 	- Jahi Barcode
+
 - Loop 7 - 0:40
 	- Jahi Identifier
+
 - Loop 8 - 2:46
 	- Jahi Level 3
 	- Train Pass
+
 - Loop 9 - 2:50
 	- Data Disk Duplication
+
 - Loop 10 - 4:00
 	- Decode Data Disk
 		- 61 6D 61 70
@@ -52,9 +62,12 @@
 		- 3A 61 6C 65 61
 		- 74 74 69 6F 6E
 		- 73 ???????
+
 	- Security Card Dup
+
 - Loop 11 - 2:00
 	- Gear Dup
+
 - Loop 12 - 3:00
 	- Gear Puzzle
 	- Cube Solve?
@@ -63,24 +76,11 @@
 		3. Connector
 		4. Garage
 	- Lvl 4 Card
-- Loop 13 - 3:00
-	- Cube Solve?
-- Loop 14 - 6:56
-	- Constellation Puzzle
-	- Jahi's Room
-		- Printer List```
-		asroot extract datalensarchive.qpak
-		build datalensinstaller.qb
-		datalens.exe train_components_list.dtl```
-- Loop 15 - 3:00
-	- Rafi Hack
-	- Cancel Update
-	- Printer Materials List
+
 - Loop 16 - 3:00
 	- Print Cable
 	- Travel to Fusion
 	- lvl 5
-		- ID: 5581987
-		- Code: 8445005216
+
 - Loop 17 - 1:15
 	- End Game
