@@ -77,15 +77,6 @@
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
         }
 
-        /* Speaker Mesh Texture */
-        .speaker-grille {
-            background-color: #121417;
-            background-image: radial-gradient(#2d3238 20%, transparent 20%);
-            background-size: 6px 6px;
-            border-radius: 12px;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
         /* Glowing Yellow Indicators */
         .led-indicator {
             background: #ffcc00;
@@ -114,13 +105,66 @@
             border: 2px solid #ff7700;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
         }
+
+        /* Custom Industrial Tempo Slider Range Input */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid #ff7700;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 14px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #ff9d42 0%, #ff7700 100%);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 0 8px #ff7700;
+            border: 1px solid #ffffff;
+        }
+
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid #ff7700;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            height: 20px;
+            width: 14px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #ff9d42 0%, #ff7700 100%);
+            cursor: pointer;
+            box-shadow: 0 0 8px #ff7700;
+            border: 1px solid #ffffff;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-8 relative">
 
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-    <!-- Top Title Header -->
+    <!-- Header Banner -->
     <header class="z-10 text-center mb-3">
         <h1 class="font-orbitron font-extrabold text-xl md:text-3xl text-orange-500 tracking-wider flex items-center justify-center gap-3">
             <i class="fa-solid fa-satellite-dish text-orange-400"></i> HORIZON PROBE SOUND DECODER
@@ -128,7 +172,7 @@
         <p class="text-[11px] md:text-xs text-slate-400 font-mono tracking-widest mt-0.5 uppercase">Emulating NAKO Sound Pad Controller • Exnilon Particle Matrix</p>
     </header>
 
-    <!-- MAIN NAKO CONTROLLER HARDWARE UNIT -->
+    <!-- NAKO CONTROLLER INTERFACE -->
     <main class="z-10 w-full max-w-3xl nako-chassis p-4 md:p-7 relative shadow-2xl">
         
         <!-- Header Branding Bar & Indicators -->
@@ -140,7 +184,6 @@
                 </span>
             </div>
 
-            <!-- Glowing Top LEDs & System Status -->
             <div class="flex items-center gap-4">
                 <div class="hidden sm:flex font-mono text-[10px] text-slate-400 gap-3">
                     <span>SERIES-8</span>
@@ -153,13 +196,11 @@
             </div>
         </div>
 
-        <!-- Main Workspace: Recessed Display Screen and 2x3 Sound Pad Grid -->
+        <!-- Recessed Display Screen and 2x3 Sound Pad Grid -->
         <div class="flex flex-col gap-4">
             
-            <!-- Recessed Top Display Screen -->
+            <!-- Display Screen -->
             <div class="nako-screen p-3 md:p-4 flex flex-col justify-between items-center min-h-[100px] relative text-slate-900 font-orbitron">
-                
-                <!-- Screen Status Header Text -->
                 <div id="screen-text" class="text-xs md:text-sm font-bold tracking-wider text-center text-slate-800 uppercase mt-0.5">
                     INITIALIZED. TRANSMIT PROBE SIGNAL.
                 </div>
@@ -184,17 +225,14 @@
                     </div>
                 </div>
 
-                <!-- Code Buffer Indicator on Screen -->
                 <div class="w-full flex justify-between items-center text-[10px] font-mono text-slate-700 px-1 pt-1 border-t border-slate-400/60">
-                    <span>RESONANCE: 24-BIT</span>
+                    <span id="screen-tempo-indicator">TEMPO: NORMAL [1.0x]</span>
                     <span id="screen-buffer">PADS INPUT: 0/6</span>
                 </div>
             </div>
 
             <!-- 2x3 Sound Pad Grid -->
             <div class="grid grid-cols-3 gap-2.5 md:gap-4">
-                
-                <!-- PAD 1 -->
                 <button id="pad-btn-1" onclick="handlePadClick(1)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 1</span>
                     <div class="w-full flex justify-center my-auto">
@@ -202,7 +240,6 @@
                     </div>
                 </button>
 
-                <!-- PAD 2 -->
                 <button id="pad-btn-2" onclick="handlePadClick(2)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 2</span>
                     <div class="w-full flex justify-center my-auto">
@@ -210,7 +247,6 @@
                     </div>
                 </button>
 
-                <!-- PAD 3 -->
                 <button id="pad-btn-3" onclick="handlePadClick(3)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 3</span>
                     <div class="w-full flex justify-center my-auto">
@@ -218,7 +254,6 @@
                     </div>
                 </button>
 
-                <!-- PAD 4 -->
                 <button id="pad-btn-4" onclick="handlePadClick(4)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 4</span>
                     <div class="w-full flex justify-center my-auto">
@@ -226,7 +261,6 @@
                     </div>
                 </button>
 
-                <!-- PAD 5 -->
                 <button id="pad-btn-5" onclick="handlePadClick(5)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 5</span>
                     <div class="w-full flex justify-center my-auto">
@@ -234,7 +268,6 @@
                     </div>
                 </button>
 
-                <!-- PAD 6 -->
                 <button id="pad-btn-6" onclick="handlePadClick(6)" class="nako-pad p-3 md:p-4 h-20 md:h-26 flex flex-col justify-between items-start text-left cursor-pointer">
                     <span class="font-orbitron font-bold text-xs md:text-sm text-slate-200">PAD 6</span>
                     <div class="w-full flex justify-center my-auto">
@@ -251,11 +284,37 @@
         </div>
     </main>
 
-    <!-- Input Sequence Display & Control Dashboard -->
-    <section class="z-10 w-full max-w-4xl mt-8 flex flex-col items-center gap-4">
+    <!-- Input Buffer & Controls Dashboard -->
+    <section class="z-10 w-full max-w-3xl mt-8 flex flex-col items-center gap-4">
         
-        <!-- 6-Pad Entered Code Slots -->
-        <div class="flex items-center gap-2 md:gap-3">
+        <!-- Tempo / Difficulty Controller Box -->
+        <div class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 md:p-4 shadow-xl flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-orange-400 text-sm"></i>
+                    <span class="font-orbitron font-bold text-xs text-slate-200">TRANSMISSION TEMPO (DIFFICULTY)</span>
+                </div>
+                <span id="tempo-badge" class="font-mono font-bold text-xs text-orange-400 bg-orange-950/80 border border-orange-500/50 px-2.5 py-0.5 rounded">
+                    1.0x (NORMAL)
+                </span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span class="font-mono text-[10px] text-slate-400">0.5x</span>
+                <input id="tempo-slider" type="range" min="0.5" max="2.5" step="0.1" value="1.0" oninput="updateTempo(this.value)">
+                <span class="font-mono text-[10px] text-slate-400">2.5x</span>
+            </div>
+
+            <!-- Tempo Speed Presets -->
+            <div class="grid grid-cols-4 gap-2 pt-1">
+                <button onclick="setTempoPreset(0.6)" class="py-1 rounded font-mono text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">0.6x SLOW</button>
+                <button onclick="setTempoPreset(1.0)" class="py-1 rounded font-mono text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">1.0x NORMAL</button>
+                <button onclick="setTempoPreset(1.5)" class="py-1 rounded font-mono text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">1.5x FAST</button>
+                <button onclick="setTempoPreset(2.0)" class="py-1 rounded font-mono text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">2.0x EXPERT</button>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-3 my-1">
             <span class="font-orbitron text-xs text-orange-400 font-bold mr-2">INPUT CODE:</span>
             <div id="slot-0" class="code-slot w-10 h-12 md:w-12 md:h-14 rounded-lg flex items-center justify-center font-orbitron font-bold text-orange-400 text-lg md:text-xl">-</div>
             <div id="slot-1" class="code-slot w-10 h-12 md:w-12 md:h-14 rounded-lg flex items-center justify-center font-orbitron font-bold text-orange-400 text-lg md:text-xl">-</div>
@@ -265,8 +324,7 @@
             <div id="slot-5" class="code-slot w-10 h-12 md:w-12 md:h-14 rounded-lg flex items-center justify-center font-orbitron font-bold text-orange-400 text-lg md:text-xl">-</div>
         </div>
 
-        <!-- Action Control Buttons -->
-        <div class="flex flex-wrap justify-center gap-3 mt-2">
+        <div class="flex flex-wrap justify-center gap-3">
             <button onclick="playMasterSignal()" class="px-5 py-2.5 rounded-lg font-orbitron font-bold text-xs bg-orange-500 hover:bg-orange-400 active:scale-95 text-slate-950 transition-all shadow-lg flex items-center gap-2">
                 <i class="fa-solid fa-play"></i> REPLAY TRANSMISSION SIGNAL
             </button>
@@ -285,7 +343,7 @@
         </div>
     </section>
 
-    <!-- Pad Guide Reference Modal -->
+    <!-- Pad Guide Modal -->
     <div id="guide-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200">
         <div class="max-w-md w-full mx-4 p-6 rounded-xl border-2 border-orange-500/50 bg-slate-900 shadow-2xl relative">
             <button onclick="toggleGuideModal()" class="absolute top-4 right-4 text-slate-400 hover:text-orange-400 text-lg">
@@ -325,7 +383,7 @@
     </div>
 
     <script>
-        // Pad to 4-dot sequence permutation definition
+        // Pad 4-dot permutation mappings
         const PAD_SEQUENCES = {
             1: [1, 4, 2, 3],
             2: [3, 1, 4, 2],
@@ -335,7 +393,7 @@
             6: [3, 4, 2, 1]
         };
 
-        // Synthesizer Audio Frequencies for Dot Nodes 1 - 2 - 3 - 4
+        // Synthesizer Audio Frequencies
         const NODE_TONES = {
             1: 329.63, // E4
             2: 392.00, // G4
@@ -343,13 +401,14 @@
             4: 523.25  // C5
         };
 
-        // Puzzle Game State
+        // State Variables
         let masterCodePads = [];
         let userCodeInput = [];
         let isPlaying = false;
         let audioCtx = null;
         let activeTimeouts = [];
         let activeOscillators = [];
+        let tempoMultiplier = 1.0; // Default 1.0x
 
         function initAudio() {
             if (!audioCtx) {
@@ -358,6 +417,26 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
+        }
+
+        /* Update Tempo State & Display Labels */
+        function updateTempo(val) {
+            tempoMultiplier = parseFloat(val);
+            const slider = document.getElementById('tempo-slider');
+            if (slider) slider.value = tempoMultiplier;
+
+            let label = "NORMAL";
+            if (tempoMultiplier <= 0.7) label = "SLOW";
+            else if (tempoMultiplier >= 1.9) label = "EXPERT";
+            else if (tempoMultiplier >= 1.4) label = "FAST";
+
+            const text = `${tempoMultiplier.toFixed(1)}x (${label})`;
+            document.getElementById('tempo-badge').innerText = text;
+            document.getElementById('screen-tempo-indicator').innerText = `TEMPO: ${label} [${tempoMultiplier.toFixed(1)}x]`;
+        }
+
+        function setTempoPreset(val) {
+            updateTempo(val);
         }
 
         function playSynthTone(freq, duration = 220) {
@@ -450,7 +529,7 @@
             modal.classList.toggle('pointer-events-none');
         }
 
-        /* Plays the full 6-pad master transmission signal ONLY via top LCD dot visualizers */
+        /* Plays master transmission signal scaled dynamically by tempoMultiplier */
         function playMasterSignal() {
             clearAllPlaybackTimers();
             isPlaying = true;
@@ -458,7 +537,9 @@
             setScreenText("RECEIVING TRANSMISSION... LISTEN CLOSELY.");
             
             let padIdx = 0;
-            const padInterval = 380;
+            // Base step interval scaled by tempo (higher multiplier = shorter interval)
+            const baseInterval = 380;
+            const stepInterval = Math.round(baseInterval / tempoMultiplier);
 
             function processPad() {
                 if (!isPlaying) return;
@@ -478,13 +559,13 @@
 
                     if (dotIdx < dots.length) {
                         const nodeNum = dots[dotIdx];
-                        triggerScreenDot(nodeNum, padInterval * 0.7);
+                        triggerScreenDot(nodeNum, Math.round(stepInterval * 0.7));
                         dotIdx++;
-                        const t = setTimeout(playNextDot, padInterval);
+                        const t = setTimeout(playNextDot, stepInterval);
                         activeTimeouts.push(t);
                     } else {
                         padIdx++;
-                        const t = setTimeout(processPad, padInterval * 0.9);
+                        const t = setTimeout(processPad, Math.round(stepInterval * 0.9));
                         activeTimeouts.push(t);
                     }
                 }
@@ -508,15 +589,12 @@
         }
 
         function handlePadClick(padNum) {
-            // Immediately stop any master signal running when player clicks a pad
-            if (isPlaying) {
-                stopMasterSignal();
+            // If master sequence is actively playing, directly append input without triggering pad audio output
+            if (!isPlaying) {
+                playSinglePadSequence(padNum);
             }
 
-            // Play single pad dot sequence with active pad button highlight on user press
-            playSinglePadSequence(padNum);
-
-            // Append input code
+            // Record input code slot entry
             if (userCodeInput.length < 6) {
                 userCodeInput.push(padNum);
                 updateSlotDisplays();
@@ -529,7 +607,7 @@
 
         function playSinglePadSequence(padNum) {
             const dots = PAD_SEQUENCES[padNum];
-            const speed = 250;
+            const speed = Math.round(250 / tempoMultiplier);
 
             const padBtn = document.getElementById(`pad-btn-${padNum}`);
             padBtn.classList.add('pad-active');
@@ -537,7 +615,7 @@
             let i = 0;
             const timer = setInterval(() => {
                 if (i < dots.length) {
-                    triggerScreenDot(dots[i], speed * 0.7);
+                    triggerScreenDot(dots[i], Math.round(speed * 0.7));
                     i++;
                 } else {
                     clearInterval(timer);
@@ -547,10 +625,11 @@
         }
 
         function clearUserCode() {
-            if (isPlaying) return;
             userCodeInput = [];
             updateSlotDisplays();
-            setScreenText("INPUT CLEARED.");
+            if (!isPlaying) {
+                setScreenText("INPUT CLEARED.");
+            }
         }
 
         function updateSlotDisplays() {
@@ -568,6 +647,10 @@
         }
 
         function verifyCode() {
+            if (isPlaying) {
+                stopMasterSignal();
+            }
+
             const isMatch = userCodeInput.every((val, idx) => val === masterCodePads[idx]);
 
             if (isMatch) {
@@ -593,7 +676,6 @@
         }
 
         const bgCanvas = document.getElementById('bg-canvas');
-        const bgCtx = bgCanvas.getContext('2d');
         function initBgCanvas() {
             bgCanvas.width = window.innerWidth;
             bgCanvas.height = window.innerHeight;
@@ -642,6 +724,7 @@
 
         window.onload = () => {
             initBgCanvas();
+            updateTempo(1.0);
             startNewGame();
         };
     </script>
