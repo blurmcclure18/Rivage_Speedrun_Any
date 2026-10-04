@@ -123,16 +123,57 @@ This will trigger a new loop instead of having to use the arcade
 - grab the battery and run to the observatory
 - insert the battery and click the fingerprint pad
 - complete the floor puzzle using this clip as a guide
+	- [Floor Puzzle](https://youtu.be/TdiBVk1WMYQ)
+- download/screenshot Jahi's code
+- perform a menu loop
 
+### Train Access - 1:42.511
+- grab the key and amman's card
+- take it to the pod room and create Jahi's card
+- go to his locker and grab the train key and scan it
+- perform a menu loop
 
+### Dup Key - 0:57.230
+- grab the battery and travel to the lobby
+- grab the security card and place it in the train
+- perform a menu loop
 
+### Dup Gear - 1:20.847
+- grab the battery and travel to the lab
+- grab the security key and interact with the console
+- download the pass, and release the tank
+- go down the ladder and grab the bottom left 4 prong gear
+- place it on the train
+- perform a menu loop
 
+### Cube Pattern - 1:58.131
+- go back to the lab
+- grab the gear and complete the gear puzzle
+- run upstairs and open the container
+- while it opens grab the data disk and place it on the train
+- screenshot the cube sequence and perform a menu loop
 
+### Print Cable - 3:40.281
+- go to the lobby upper terminal
+- grab the data disk
+- screenshot the password on the wall
+- insert the data disk
+- decode the sequence using this guide
+	- 61 - 6D - 61 - 70
+	- 65 - 63
+	- 3A - 61 - 6C - 65 - 61
+	- 74 - 74 - 69 - 6F - 6E
+	- 73 - ???????
+- screenshot the cube safe code
+- go back to the garage and get the cube
+- enter the cube sequence
+- scan level 4
+- return to the garage
+- print the cable
+- grab the cable and put it on the train
+- perform a menu loop
 
-
-
-	- ![alt text](./images/Barcode_Guide.png)
-### Escape
+### Escape - 0:33.872
 - Leave your room and go to Jonny's room
 - Walk through the portal
 - Go up to the Fusion Core Terminal
