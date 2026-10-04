@@ -1,29 +1,22 @@
 # Rivage Speedrun Any%
-This page contains a guide and python script for Any% speedrunning the game Rivage
-
+This page contains a guide for speedrunning the Any% category for the game Rivage
+I will assume that you have completed the game at least once and know where the main puzzles are in the game.
 ## Game settings
-I have the in-game FPS counter enabled to notate when time should start 
-I also run them game in windowed mode so I can have the script output visible off to the side
-
+I have the in-game FPS counter enabled to notate when time should start and to trigger splits.
 ## Menu Loop
 To save time on the loop you can press escape and quit to main menu, 
 Once on the main menu click Continue
 This will trigger a new loop instead of having to use the arcade
+(you can press escape after quitting to skip the black screens and during the wake-up sequence to skip it.)
 
 ## Guide
-When you start a new game during the opening cutscene run the script, it will display the following information
-- Miranda's Birthdate
-- LVL 5 ID Number
-- LVL 5 Badge Code
-	- Script Output Example
-   - ![alt text](./images/Script_Output_Example.png)
+- Start a new game and skip the cutscene. 
+- Time starts with the FPS counter displays in the upper left corner
 
-- Skip the cutscene and time starts with the FPS counter displays in the upper left corner
-### LVL 1 Split:
+### Pod Access split - 1:39.212
 - Go to the safe in Miranda's room and input /000/ and press ok
-- Next enter the birthdate listed in the script output
-- After you open the safe and scan the barcode the split ends when it's added to your K9
-### Pod Access split:
+- Next enter her birthday from the back of her book
+- Grab and scan her card
 - Leave your room and enter the main area
 - Grab the first key on the lounge area
 - Go up to the kitchen and enter the below code to unlock the terminal
@@ -39,20 +32,106 @@ When you start a new game during the opening cutscene run the script, it will di
 - Once the screen is active select the pod bay access
 - Scan the code and once it's added to your K9 perform a menu loop
 - Once the FPS counter reappears that marks your split
-### LVL 5 Split:
-- Leave your room and enter the pod access room
-- Go to the kitchen terminal, unlock it and select the cultivation room
-- Go to the terminal and type in the LVL 5 ID number from the script output
-- Using the below guide enter the LVL 5 Code displayed on the output
+
+### Lvl 2 Split - 1:34.559
+- Leave your room and switch to the Cultivation area
+- Grab the key from Miranda's locker
+- Run back to the cultivation area and fix the key (4 presses on the middle and 6 on the back)
+- unlock the chest and grab Amman's card
+- look at the card ID and remember it
+- run to the card printer in the pod bay
+- enter his ID and fix the code to be:
+	- 492 386 127 5
+- insert, print, and scan his badge
+- once scanned perform a menu loop
+
+### Amman Room - 1:51.471
+- leave your room and go to the horizon probe room
+- enter the password igorpetrov in the terminal and get the contactless upgrade
+- Run to Amman's room and enter the password cosmik!
+- open the command-line and type the following commands:
+	- ```build hyperviolet.qb ```
+	- ```copy flashlight.exe miranda.v ```
+	- ```datalens.exe train_components_list.dtl ``` 
+		- credit: DragonKarsh
+- screenshot the printer cable list and perform a menu loop
+
+### Exnilon - 3:40.956
+- head to the vending machine in the pod bay
+- use your HV flashlight to unlock the terminal
+- click manage stock and enter the following:
+	- CP379087
+	- CP208674
+	- CP687575
+- confirm it and add a credit to the vending machine
+- enter 024 and scan the multi-pass
+- once added enter the garage
+- Go up the ladder and grab the Orbit Scout module next to the terminal
+- go to the orbital scout and pull the lever
+- place the modules in the orbital scout 
+- grab the sound pad next to the cube safe before going back up the ladder
+- perform the stellar map sequence, I used the following guide (where 1 is the top middle hexagon and it goes clockwise around the circle)
+	- 331 112 343 112 666
+	- 116 164 451 655 466
+	- 434 454 444 221 232
+		- *(I know that the first 112 sequence doesn't have a point in the first 1 spot but I memorize better in groups of three)*
+		- *I have a practice module you can use in the guides folder called [stellar_practice.html](https://github.com/blurmcclure18/Rivage_Speedrun_Any/guides/stellar_practice.html) you can download the .html file and open it in any browser and practice the sequence*
+- once the squence is complete play the sound and run to the lobby
+- I prefer to stand in the time slow circle so I can physically write down the numbers for the sequence using this guide: 
+	1. 1 - 4
+	2. 3 - 1
+	3. 2 - 3
+	4. 4 - 1
+	5. 1 - 3
+	6. 3 - 4
+	- *when the horizon_particle.wav sequence plays I treat each dot as a number in a spot of 1 - 2 - 3 - 4*
+	- *you can just look at the first 2 numbers in the Horizon_Particle.wav sequence to figure out the pad number to press*
+- Once you reveal the particle screenshot it and menu loop
+
+### Blueprint (time sensitive) - 2:08.317
+- run to the garage and stand on the right side of the incinerator, walk into it and move your cursor around while mashing Q to try and grab the key inside
+	- credit: DragonKarsh
+- Once you have the key go up the ladder and complete the particle puzzle
+- open the email and memorize the Battery code
+- Run down to the kitchen, unlock and grab the usb key
+- go to the battery case and enter the code
+- insert the battery for extra power and run to the lobby computer
+- insert the usb drive and cancel the update
+- go back and switch the room to the Robot Area
+- go to the laptop and screenshot the blueprint
+
+### Jahi ID - 0:43.941
+- grab and insert the battery for extra power
+- run to the observatory and screenshot Jahi's ID
+
+### Fingerprint - 2:55.796
+- grab and insert the battery for extra power
+- run to the lab door and input the password:
+	- chronoservus
+- enter the lab and run to the right and pick up the pipe
+- scan the fingerprint 
+	- *(you might have to turn off HV flashlight and back on for it to let you scan it)*
+- check the desk to your right and grab a switch if it's there
+- continue to walk around the lab checking the interactible items for fingerprints
+	- *you just need 1 from the other items*
+	- *take note of the other switch locations as you find them*
+- once you find the other Item fingerprint complete the switch puzzle
+- for the drawings puzzle you can now follow the blood on the floor and it will take you to each drawing and the place where you input the codes
+- once you scan the final fingerprint perform a menu loop
+
+### Jahi Code - 1:46.857
+- grab the battery and run to the observatory
+- insert the battery and click the fingerprint pad
+- complete the floor puzzle using this clip as a guide
+
+
+
+
+
+
+
+
 	- ![alt text](./images/Barcode_Guide.png)
-- Open the card containter
-- Now go to miranda's locker and grab the key
-- Modify the key so the middle part is straight up and the bottom part (closest to the handle) is opposite the first two
-- Run back to the cultivation room and insert the key in the locked chest
-- Retrieve the broken card and insert it into the pod bay terminal
-- Click Print Card and once it's printed scan the code on the back
-- When it's added to your K9 perform a menu loop
-- Once the FPS counter reappears that marks your split
 ### Escape
 - Leave your room and go to Jonny's room
 - Walk through the portal

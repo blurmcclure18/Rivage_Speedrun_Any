@@ -11,22 +11,19 @@
 	- Contactless
 	- HV Flashlight
 		``` build hyperviolet.qb ```
-		``` datalens.exe train_components_list.dtl ``` 
 		``` copy flashlight.exe miranda.v ```
+		``` datalens.exe train_components_list.dtl ``` 
+
 - Loop 3 - 1:21
     - Multi-Pass
-		- 379087
-		- 208674
-		- 687575
+		- CP379087
+		- CP208674
+		- CP687575
 
 	- Stellar Map
-		- 3 - 3 - 1 - 1 - 2 - 3 - 4 - 3
-		- 1 - 1 - 2 - 6 - 6 - 6 - 1 
-		- 1 - 6 - 1 - 6 - 4 - 4 - 5 - 1 - 6
-		- 5 - 5 - 4 - 6 - 6
-		- 4 - 3 - 4 - 4
-		- 5 - 4 - 4 - 4 - 4
-		- 2 - 2 - 1 - 2 - 3 - 2
+		- 331 112 343 112 666
+		- 116 164 451 655 466
+		- 434 454 444 221 232
 
 	- Particle Code
 		- Sound Pad Guide:
